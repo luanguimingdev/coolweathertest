@@ -53,8 +53,9 @@ public class Utility {
                     city.setCityCode(citydObject.getInt("id"));
                     city.setProvinceId(provinceId);
                     city.save();
-                    return true;
+
                 }
+                return true;
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -72,8 +73,9 @@ public class Utility {
                     county.setCityId(cityId);
                     county.setWeatherId(countyObject.getString("weather_id"));
                     county.save();
-                    return true;
+
                 }
+                return true;
             }catch (Exception e){
                 e.printStackTrace();
             }

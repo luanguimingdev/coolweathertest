@@ -4,19 +4,15 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompatSideChannelService;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bumptech.glide.util.Util;
 import com.coolweather.android.R;
 import com.coolweather.android.db.City;
 import com.coolweather.android.db.County;
@@ -70,7 +66,7 @@ public class ChooseAreaFragment extends Fragment {
 
 
     }
-
+   /***j活动启动开始加在网络信息了*/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -79,26 +75,31 @@ public class ChooseAreaFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position , long id) {
                 if(currentlevel== LEVEL_PROVINCE){
                          selectProvince =  provinceList.get(position);
+                    queryCities();
                     /***
                      * 查询当前的省份内部的城市信息
                      */
                 }else if (currentlevel== LEVEL_CITY){
                         selectCity = cityList.get(position);
+                    queryCoubties();
                     /***
                      * 查询当前城市内部的县信息
                      */
                 }
             }
         });
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (currentlevel==LEVEL_COUNTY){
+                    queryCities();
                     /***
                      * 查询市区城市的信息
                      */
 
                 }else if(currentlevel == LEVEL_CITY){
+                    queryProvinces();
                     /***
                      * 查询省的信息
                      */
@@ -108,6 +109,7 @@ public class ChooseAreaFragment extends Fragment {
         /**
          * 加载省的信息
          */
+        queryProvinces();
     }
     private  void queryProvinces(){
         titleText.setText("中国");
@@ -122,7 +124,9 @@ public class ChooseAreaFragment extends Fragment {
             listview.setSelection(0);
             currentlevel = LEVEL_PROVINCE;
         }else{
-            String address = " http://guolin.tech/api/china";
+
+            String address = "http://guolin.tech/api/china";
+            Toast.makeText(getActivity(), "网络请求成功", Toast.LENGTH_SHORT).show();
             queryFromServer(address,"province");
         }
     }
@@ -140,7 +144,9 @@ public class ChooseAreaFragment extends Fragment {
             currentlevel = LEVEL_CITY;
         }else{
             int provinceCode = selectProvince.getProvinceCode();
-            String address = "http://guolin.tech/api/china/"+provinceCode;
+
+            String address = "http://guolin.tech/api/china/" + provinceCode;
+            Toast.makeText(getActivity(), "网络请求成功", Toast.LENGTH_SHORT).show();
             queryFromServer(address,"city");
         }
 
@@ -160,7 +166,8 @@ public class ChooseAreaFragment extends Fragment {
         }else{
             int provinceCode = selectProvince.getProvinceCode();
             int cityCode = selectCity.getCityCode();
-            String address = "http://guolin.tech/api/china/"+ provinceCode+"/"+cityCode;
+            String address = "http://guolin.tech/api/china/" + provinceCode + "/" + cityCode;
+            Toast.makeText(getActivity(), "网络请求成功", Toast.LENGTH_SHORT).show();
             queryFromServer(address,"county");
         }
     }
